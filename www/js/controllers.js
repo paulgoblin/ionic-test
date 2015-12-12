@@ -1,6 +1,6 @@
 angular.module('tradeApp')
 .constant( "CONF_VARS", {
-  API_URL: "http://localhost:5000",
+  API_URL: "https://agile-falls-1424.herokuapp.com",
 })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, UserSrvc, $state) {
 
@@ -47,7 +47,7 @@ angular.module('tradeApp')
         () => {
           $scope.loginData = {};
           $scope.closeLogin();
-          $state.go('app.playlists');
+          $state.go('app.home');
         },
         () => {
           $scope.badLoginHUD("Incorrect username/password");
@@ -88,15 +88,9 @@ angular.module('tradeApp')
 
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+.controller('homeCtrl', function($scope, UserSrvc) {
+  UserSrvc.getUsers
+
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
