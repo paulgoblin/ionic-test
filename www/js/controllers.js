@@ -2,7 +2,7 @@ angular.module('tradeApp')
 .constant( "CONF_VARS", {
   API_URL: "http://localhost:5000",
 })
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, UserSrvc) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, UserSrvc, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -41,12 +41,30 @@ angular.module('tradeApp')
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     UserSrvc.doLogin($scope.loginData)
+      .then(
+        () => {
+          $scope.closeLogin();
+          $state.go('app.playlists');
+        },
+        () => {
+          $scope.errMessage = "Incorrect username/password";
+          $scope.badLoginHUD();
+        }
+      )
     console.log('Doing login', $scope.loginData);
   };
 
-  $scope.doRegister = function() {
+  $scope.doRegister = () => {
     console.log('Doing login', $scope.loginData);
   };
+
+  $scope.badLoginHUD = () => {
+    $scope.loginErr = true;
+    setTimeout(() => {
+      $scope.loginErr = false;
+      $scope.$apply();
+    }, 3000);
+  }
 
 })
 

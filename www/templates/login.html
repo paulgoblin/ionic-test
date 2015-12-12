@@ -17,6 +17,9 @@
           <span class="input-label">Confirm Password</span>
           <input type="password" ng-model="loginData.confirmPassword">
         </label>
+        <div ng-if="loginErr" class="fade">
+          {{errMessage}}
+        </div>
         <button class="button button-block button-positive"
                 ng-hide="isRegistering"
                 type="submit">Log in</button>
