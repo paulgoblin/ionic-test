@@ -40,25 +40,45 @@ angular.module('tradeApp')
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
+    console.log("DO LOGIN");
+
     UserSrvc.doLogin($scope.loginData)
       .then(
         () => {
+          $scope.loginData = {};
           $scope.closeLogin();
           $state.go('app.playlists');
         },
         () => {
-          $scope.errMessage = "Incorrect username/password";
-          $scope.badLoginHUD();
+          $scope.badLoginHUD("Incorrect username/password");
         }
       )
-    console.log('Doing login', $scope.loginData);
   };
 
   $scope.doRegister = () => {
-    console.log('Doing login', $scope.loginData);
+    console.log("DO REGISTER");
+    if ( !$scope.loginData.username ||
+         !$scope.loginData.password ||
+         !$scope.loginData.confirmPassword) {
+           $scope.badLoginHUD("Must fill all fields");
+         }
+    if ( $scope.loginData.password !== $scope.loginData.password ){
+      $scope.badLoginHUD("Passwords must match");
+    }
+    UserSrvc.doRegister($scope.loginData)
+      .then(
+        (resp) => {
+          $scope.badLoginHUD("Congrats! You can login now");
+          $scope.isRegistering = false;
+        },
+        () => {
+          $scope.badLoginHUD("Username already taken!");
+        }
+      )
   };
 
-  $scope.badLoginHUD = () => {
+  $scope.badLoginHUD = (message) => {
+    $scope.errMessage = message
     $scope.loginErr = true;
     setTimeout(() => {
       $scope.loginErr = false;

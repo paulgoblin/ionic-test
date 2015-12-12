@@ -9,4 +9,8 @@ angular.module('tradeApp')
       .then((resp) => { this.user = resp.data })
   }
 
+  this.doRegister = (data) => {
+    return $http.post(CONF_VARS.API_URL + '/users/register', data)
+  }
+
 })
